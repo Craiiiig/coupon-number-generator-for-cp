@@ -35,16 +35,16 @@
         <label for="couponType">Select type:</label>
 
         <select id="couponType" name="couponType">
-             <option value="" disabled selected hidden>Select a type</option>
+            <option value="" disabled selected hidden>Select a type</option>
             <option value="30">Yellow / Gold: 30</option>
-            <option value="10">Satchel</option>
-            <option value="70">Gray</option>
+            <option value="10">Satchel : 10 </option>
+            <option value="75">Gray: 75</option>
         </select><br>
         <button id="generateBtn">生成 Barcode / Generate barcodes </button><br>
         <button onclick="window.print()">打印Barcode / Print Barcodes</button>
     </div>
 
-    <h3>List of Barcode</h3>
+    <h3 class="coupon-list-title""">List of Barcode</h3>
     <div id="container"></div>
 
     <script src="https://unpkg.com/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -77,6 +77,10 @@
             }
 
             // 4. 清空容器
+            if (couponType.value === "") {
+                alert("請選擇一個類型！");
+                return;
+            }
 
             const loopNumber = parseInt(couponType.value) || 30; // 預設為 30，如果沒有選擇類型
 
@@ -101,7 +105,7 @@
                     displayValue: true
                 });
             });
-
+            document.querySelector('.coupon-list-title').textContent = `List of Barcodes (${loopNumber} items)`;
             console.log("已生成遞增條碼：", barcodeList);
         });
     </script>
