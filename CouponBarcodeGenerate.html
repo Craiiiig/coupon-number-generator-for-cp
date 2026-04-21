@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Barcode List Test</title>
+    <style>
+        svg {
+            margin: 10px;
+            display: block;
+            /* 讓條碼垂直排列 */
+            border-bottom: 1px dashed #ccc;
+            /* 加個虛線方便切開（選配） */
+        }
+
+        @media print {
+            #inputSection {
+                display: none;
+            }
+
+            /* 列印時隱藏輸入框和按鈕 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="inputSection">
+        <input type="text" id="inputData" placeholder="輸入條碼起始編號">
+        <button id="generateBtn">生成 30 個Barcode</button>
+        <button onclick="window.print()">打印Barcode</button>
+    </div>
+
+    <h3>List of Barcode</h3>
+    <div id="container"></div>
+
+    <script src="https://unpkg.com/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+    <script>
+        const barCodeContainer = document.getElementById("container");
+        const inputField = document.getElementById("inputData");
+
+        document.getElementById("generateBtn").addEventListener("click", function () {
+            // 取得值並去掉空白
+            const rawValue = inputField.value.trim();
+
+            // 1. 檢查是否為空
+            if (!rawValue) {
+                alert("請先輸入資料！");
+                return;
+            }
+
+            barCodeContainer.innerHTML = "";
+            let barcodeList = [];
+            
+            // 3. 轉換為數字型態，方便後續做加法運算
+            const startNumber = parseInt(rawValue, 10);
+            // 2. 檢查是否為有效的數字
+            // isNaN 會判斷字串內容是否能轉換成數字
+            if (isNaN(rawValue)) {
+                alert("請輸入純數字作為條碼起始編號！");
+                return;
+            }
+
+            // 4. 清空容器
+
+
+
+
+            // 5. 循環 30 次生成遞增編號
+            for (let i = 0; i < 30; i++) {
+                // 假設輸入 100，會生成 100, 101, 102...
+                // 如果你需要固定長度（如 000100），可以再加 padStart
+                const currentNum = (startNumber + i).toString();
+                barcodeList.push(currentNum);
+            }
+
+            // 6. 渲染條碼
+            barcodeList.forEach(data => {
+                const newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                barCodeContainer.appendChild(newSvg);
+
+                JsBarcode(newSvg, data, {
+                    format: "CODE128",
+                    width: 2,
+                    height: 60,
+                    displayValue: true
+                });
+            });
+
+            console.log("已生成遞增條碼：", barcodeList);
+        });
+    </script>
+
+</body>
+
+</html>
