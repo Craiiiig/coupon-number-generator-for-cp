@@ -31,8 +31,16 @@
     <p>Please input the number of your first coupon, starting with 302, 304, or 306:</p>
 
     <div id="inputSection">
-        <input type="text" id="inputData" placeholder="輸入條碼起始編號"><br>
-        <button id="generateBtn">生成 30 個Barcode / Generate 30 barcodes </button><br>
+        <input type="text" id="inputData" placeholder="輸入條碼起始編號">
+        <label for="couponType">Select type:</label>
+
+        <select id="couponType" name="couponType">
+             <option value="" disabled selected hidden>Select a type</option>
+            <option value="30">Yellow / Gold: 30</option>
+            <option value="10">Satchel</option>
+            <option value="70">Gray</option>
+        </select><br>
+        <button id="generateBtn">生成 Barcode / Generate barcodes </button><br>
         <button onclick="window.print()">打印Barcode / Print Barcodes</button>
     </div>
 
@@ -44,6 +52,7 @@
     <script>
         const barCodeContainer = document.getElementById("container");
         const inputField = document.getElementById("inputData");
+        const couponType = document.getElementById("couponType");
 
         document.getElementById("generateBtn").addEventListener("click", function () {
             // 取得值並去掉空白
@@ -69,11 +78,11 @@
 
             // 4. 清空容器
 
-
+            const loopNumber = parseInt(couponType.value) || 30; // 預設為 30，如果沒有選擇類型
 
 
             // 5. 循環 30 次生成遞增編號
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < loopNumber; i++) {
                 // 假設輸入 100，會生成 100, 101, 102...
                 // 如果你需要固定長度（如 000100），可以再加 padStart
                 const currentNum = (startNumber + i).toString();
