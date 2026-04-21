@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <title>Coupon Barcode Generator for CouriersPlease</title>
     <style>
-
-        
-        
         svg {
             margin: 10px;
             display: block;
@@ -17,7 +14,10 @@
         }
 
         @media print {
-            #inputSection {
+
+            #inputSection,
+            h1,
+            p {
                 display: none;
             }
 
@@ -57,7 +57,7 @@
 
             barCodeContainer.innerHTML = "";
             let barcodeList = [];
-            
+
             // 3. 轉換為數字型態，方便後續做加法運算
             const startNumber = parseInt(rawValue, 10);
             // 2. 檢查是否為有效的數字
