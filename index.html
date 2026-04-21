@@ -13,6 +13,12 @@
             /* 加個虛線方便切開（選配） */
         }
 
+        #inputData {
+            padding: 8px;
+            width: 300px;
+            font-size: 16px;
+        }
+
         @media print {
 
             #inputSection,
@@ -28,20 +34,21 @@
 
 <body>
     <h1>CourierPlease Coupon Barcode Generator</h1>
-    <p>Please input the number of your first coupon, starting with 302, 304, 306, 135, 136, 137</p>
+    <p>Please input the number of your first coupon, starting with 302, 304, 306, 135, 136, 137, must be ending with 1
+    </p>
 
     <div id="inputSection">
-        <input type="text" id="inputData" placeholder="輸入條碼起始編號">
-        <label for="couponType">Select type:</label>
+        <input type="text" id="inputData" placeholder="輸入起始編號 / Enter starting number">
+        <label for="couponType">Select Coupon Type:</label>
 
         <select id="couponType" name="couponType">
             <option value="" disabled selected hidden>Select a type</option>
-            <option value="30">Yellow / Gold: 30</option>
-            <option value="10">Satchel : 10 </option>
-            <option value="75">Gray: 75</option>
+            <option value="30">Yellow / Gold: 30 coupons</option>
+            <option value="10">Satchel : 10 coupons </option>
+            <option value="75">Gray: 75 coupons</option>
         </select><br>
         <button id="generateBtn">生成 Barcode / Generate barcodes </button><br>
-        <button onclick="window.print()">打印Barcode / Print Barcodes</button>
+        <button onclick="window.print()">打印 Barcode / Print Barcodes</button>
     </div>
 
     <h3 class="coupon-list-title""">List of Barcode</h3>
@@ -60,27 +67,35 @@
 
             // 1. 檢查是否為空
             if (!rawValue) {
-                alert("請先輸入資料！");
+                alert("請先輸入資料！/ Please enter a value first!");
                 return;
             }
 
             barCodeContainer.innerHTML = "";
             let barcodeList = [];
 
-            // 3. 轉換為數字型態，方便後續做加法運算
+            const lastDigit = rawValue.slice(-1);
+            if (lastDigit !== "1") {
+                alert("條碼起始編號必須以 1 結尾！ / The starting barcode number must end with 1!");
+                return;
+            }
+
+            // 2. 轉換為數字型態，方便後續做加法運算
             const startNumber = parseInt(rawValue, 10);
-            // 2. 檢查是否為有效的數字
+
+            // 3. 檢查是否為有效的數字
             // isNaN 會判斷字串內容是否能轉換成數字
             if (isNaN(rawValue)) {
-                alert("請輸入純數字作為條碼起始編號！");
+                alert("請輸入純數字作為條碼起始編號！ / Please enter a valid number as the starting barcode!");
                 return;
             }
 
             // 4. 清空容器
             if (couponType.value === "") {
-                alert("請選擇一個類型！");
+                alert("請選擇一個類型！ / Please select a coupon type!");
                 return;
             }
+
 
             const loopNumber = parseInt(couponType.value) || 30; // 預設為 30，如果沒有選擇類型
 
@@ -106,7 +121,6 @@
                 });
             });
             document.querySelector('.coupon-list-title').textContent = `List of Barcodes (${loopNumber} items)`;
-            console.log("已生成遞增條碼：", barcodeList);
         });
     </script>
 
